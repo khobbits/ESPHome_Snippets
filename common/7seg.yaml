@@ -1,0 +1,32 @@
+## KHobbits - https://github.com/khobbits/ESPHome_Snippets ##
+# This file uses the adatafruit LEDBackpack code, to drive an Adafruit 7 segment display (HT16K33) backpack over i2c.
+# This presents a text object inside HA that can be updated to display numbers (and mangled text) on the display.
+# I couldn't find an existing component, and I don't know C / Python, so doing it with a Lambda
+# Idea / More info: https://github.com/JAAlperin/esphome-adafruit-7-segment-LED-backpack-example/
+
+esphome:
+  includes: 
+    - Adafruit_LED_Backpack/Adafruit_LEDBackpack.h #https://github.com/adafruit/Adafruit_LED_Backpack 
+    - Adafruit_LED_Backpack/Adafruit_LEDBackpack.cpp #https://github.com/adafruit/Adafruit_LED_Backpack 
+  libraries:    
+    - "SPI"
+    - "Wire"
+    - "Adafruit BusIO"
+    - "Adafruit GFX Library"
+
+text:
+  - platform: template
+    name: "7seg"
+    id: d7seg
+    entity_category: "diagnostic"
+    disabled_by_default: true
+    mode: text
+    initial_value: "0000"
+    set_action:
+      then:
+        - lambda: |-
+              static Adafruit_7segment matrix = Adafruit_7segment();
+              String strx = x.c_str();
+              matrix.begin(0x70);
+              matrix.println(strx);
+              matrix.writeDisplay();

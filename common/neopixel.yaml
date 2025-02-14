@@ -1,0 +1,43 @@
+## KHobbits - https://github.com/khobbits/ESPHome_Snippets ##
+# This file initializes the neopixel on the Adafruit Feather ESP32-S2
+
+defaults:
+    neopixel_id: neopixel
+
+output:
+  - platform: gpio
+    pin: GPIO21
+    id: neopixel_power_gpio
+
+switch:
+  - platform: output
+    name: "Neopixel power bus"
+    output: neopixel_power_gpio
+    id: neopixel_power_switch
+    restore_mode: ALWAYS_ON
+    disabled_by_default: True
+
+light:
+  - name: "Neopixel"
+    id: neopixel
+    platform: esp32_rmt_led_strip
+    rgb_order: GRB
+    chipset: WS2812
+    pin: GPIO33
+    rmt_channel: 0
+    num_leds: 1
+    restore_mode: RESTORE_DEFAULT_ON
+    default_transition_length: 100ms
+    effects:
+      - pulse:
+          name: "Fast Dim Pulse"
+          transition_length: 250ms
+          update_interval: 0.5s
+          min_brightness: 15%
+          max_brightness: 50%
+      - pulse:
+          name: "Slow Dim Pulse"
+          transition_length: 750ms
+          update_interval: 1s
+          min_brightness: 15%
+          max_brightness: 50%

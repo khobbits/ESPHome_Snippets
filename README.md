@@ -8,3 +8,6 @@ ESPHome deployed as Addon on Home Assistant OS (running as Proxmox VM)
 Adafruit ESP32-S2 Feather - 2 MB PSRAM and STEMMA QT / Qwiic
 Adafruit 0.56" 4-Digit 7-Segment Display w/I2C Backpack
 NeoKey 1x4 QT I2C - Four Mechanical Key Switches with NeoPixels
+
+Noteable Snippits:
+common/7seg.yaml - Drive an Adafruit 7 segment display (HT16K33) backpack over i2c.
