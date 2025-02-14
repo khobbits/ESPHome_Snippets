@@ -1,0 +1,39 @@
+## KHobbits - https://github.com/khobbits/ESPHome_Snippets ##
+# This file has standard board config for the Adafruit Feather ESP-S2, including battery monitoring
+
+esp32:
+  board: featheresp32-s2
+  framework:
+    type: arduino
+    
+i2c:
+  sda: GPIO3
+  scl: GPIO4
+  scan: true
+  #frequency: 50000hz
+  #timeout: 10ms
+  
+status_led:
+  pin: GPIO13
+  
+binary_sensor:
+  - platform: status
+    name: "ESP Status"
+    disabled_by_default: True
+  
+external_components:
+  - source: github://Option-Zero/esphome-components
+    components: [max17048]
+    
+sensor:
+  #- platform: max17043
+  - platform: max17048
+    battery_voltage:
+      name: Battery voltage
+      id: batt_v
+    battery_level:
+      name: Battery level
+      id: batt_pct
+    rate:
+      name: Battery discharge rate
+      id: batt_discharge_rate    

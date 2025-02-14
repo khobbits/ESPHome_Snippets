@@ -1,0 +1,26 @@
+## KHobbits - https://github.com/khobbits/ESPHome_Snippets ##
+# This file uses deepsleep to awake once a minute to publish sensor data
+
+deep_sleep:
+  id: deepsleep
+  run_duration: 
+    default: 8s
+  sleep_duration: 52s
+  wakeup_pin: 
+    number: GPIO8
+    inverted: false
+    mode:
+      input: true
+      pullup: true
+  wakeup_pin_mode: KEEP_AWAKE
+
+switch:
+  - platform: template
+    name: "Keep ESP Awake?"
+    id: esp_keep_awake
+    optimistic: true
+    turn_on_action:
+      - deep_sleep.prevent: deepsleep
+    turn_off_action: 
+      then:
+        - deep_sleep.allow: deepsleep    
