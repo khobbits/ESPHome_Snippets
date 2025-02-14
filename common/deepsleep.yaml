@@ -1,11 +1,15 @@
 ## KHobbits - https://github.com/khobbits/ESPHome_Snippets ##
 # This file uses deepsleep to awake once a minute to publish sensor data
 
+defaults:
+  run_duration: 8s
+  sleep_duration: 52s
+
 deep_sleep:
   id: deepsleep
   run_duration: 
-    default: 8s
-  sleep_duration: 52s
+    default: ${run_duration}
+  sleep_duration: ${sleep_duration}
   wakeup_pin: 
     number: GPIO8
     inverted: false
@@ -23,4 +27,4 @@ switch:
       - deep_sleep.prevent: deepsleep
     turn_off_action: 
       then:
-        - deep_sleep.allow: deepsleep    
+        - deep_sleep.allow: deepsleep  
