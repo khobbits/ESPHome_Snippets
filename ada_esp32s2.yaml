@@ -1,0 +1,43 @@
+## Example ESP Device File using the common includes.
+
+substitutions:
+  device_name: adaesp32
+  friendly_name: AdaESP32
+
+packages:
+  device_base: !include common/base.yaml
+  board_base: !include common/feathers2.yaml
+  wifi: !include common/wifi.yaml
+  #wifi_fallback: !include common/wifi_fallback.yaml
+  neopixel: !include common/neopixel.yaml
+  uptime: !include common/uptime.yaml
+  deepsleep: !include 
+    file: common/deepsleep.yaml
+    vars:
+      run_duration: 10s
+      sleep_duration: 50s
+      wakeup_pin: A4
+      ha_entity_id: input_boolean.ada_deep_sleep
+  neokey: !include common/neokey.yaml
+  esp_info: !include common/esp_info.yaml
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+  build_path: ./${device_name}_build/
+
+#esp32:
+#  framework:
+#    type: esp-idf
+
+wifi:
+  manual_ip:
+    static_ip: 192.168.1.11
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0  
+
+#web_server:
+
+# RAW Resources
+   
+# HA Resources
