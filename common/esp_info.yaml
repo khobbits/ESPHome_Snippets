@@ -1,0 +1,31 @@
+## KHobbits - https://github.com/khobbits/ESPHome_Snippets ##
+# This file publishes a text status to HA (Doesn't do much without extra states)
+
+esphome:
+  on_boot:
+    - priority: 600
+      then:
+      - text.set:
+          id: esp_info
+          value: "Booting"
+    - priority: 250
+      then:
+      - text.set:
+          id: esp_info
+          value: "Starting Wifi"
+    - priority: -100
+      then:
+      - text.set:
+          id: esp_info
+          value: "Boot Successful"
+
+text:
+  - platform: template
+    name: "ESP Info"
+    id: esp_info
+    icon: "mdi:information-box"
+    entity_category: "diagnostic"
+    disabled_by_default: true
+    mode: text
+    optimistic: true
+    initial_value: "Init"
