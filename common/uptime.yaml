@@ -1,11 +1,14 @@
 ## KHobbits - https://github.com/khobbits/ESPHome_Snippets ##
 # This file creates an uptime tracker in HA
 
+defaults:
+  update_interval: 5s
+
 sensor:
   - platform: uptime
     id: uptime_sec
     name: Uptime Sensor
-    update_interval: 2s
+    update_interval: ${update_interval}
     accuracy_decimals: 0
     unit_of_measurement: s
     disabled_by_default: True
