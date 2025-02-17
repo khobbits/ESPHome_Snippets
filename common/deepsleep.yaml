@@ -4,6 +4,14 @@
 defaults:
   run_duration: 8s
   sleep_duration: 52s
+  wakeup_pin: A4
+  ha_entity_id: input_boolean.prevent_deep_sleep
+
+esphome:
+  on_boot:
+    - priority: 600
+      then:
+      - deep_sleep.prevent: deepsleep
 
 deep_sleep:
   id: deepsleep
@@ -11,20 +19,32 @@ deep_sleep:
     default: ${run_duration}
   sleep_duration: ${sleep_duration}
   wakeup_pin: 
-    number: GPIO8
+    number: ${wakeup_pin}
+    allow_other_uses: true
     inverted: false
     mode:
       input: true
       pullup: true
   wakeup_pin_mode: KEEP_AWAKE
 
-switch:
-  - platform: template
-    name: "Keep ESP Awake?"
-    id: esp_keep_awake
-    optimistic: true
-    turn_on_action:
-      - deep_sleep.prevent: deepsleep
-    turn_off_action: 
+binary_sensor:
+  - platform: homeassistant
+    entity_id: ${ha_entity_id}
+    id: disable_sleep
+    publish_initial_state: true
+    on_state:
       then:
-        - deep_sleep.allow: deepsleep  
+        if:
+          condition:
+            lambda: return x;
+          then:
+            - logger.log: "Preventing deep sleep"
+            - deep_sleep.prevent: deepsleep
+          else:
+            - logger.log: "Allowing deep sleep"
+            - deep_sleep.allow: deepsleep
+  - platform: gpio
+    id: deep_sleep_toggle
+    pin: 
+      number: ${wakeup_pin}
+      allow_other_uses: true
