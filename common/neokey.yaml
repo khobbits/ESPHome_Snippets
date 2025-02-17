@@ -1,0 +1,66 @@
+## KHobbits - https://github.com/khobbits/ESPHome_Snippets ##
+# This file uses ssieb's seesaw library to map the 4 button neokey board to HA
+
+defaults:
+  key1: "Key1"
+  key2: "Key2"
+  key3: "Key3"
+  key4: "Key4"
+  
+external_components:
+  - source:
+      type: git
+      url: https://github.com/khobbits/ssieb_esphome_components.git
+      ref: seesaw
+    components: [ seesaw ]
+
+seesaw:
+  address: 0x30
+  
+binary_sensor:
+  - platform: seesaw
+    id: neokey1
+    pin: 4
+    name: ${key1}
+  - platform: seesaw
+    id: neokey2
+    pin: 5
+    name: ${key2}
+  - platform: seesaw
+    id: neokey3
+    pin: 6
+    name: ${key3}
+  - platform: seesaw
+    id: neokey4
+    pin: 7
+    name: ${key4}
+    
+light:
+  - platform: seesaw
+    id: neokeylights
+    pin: 3
+    num_leds: 4
+  - platform: partition
+    name: ${key1}
+    segments:
+      - id: neokeylights
+        from: 0
+        to: 0
+  - platform: partition
+    name: ${key2}
+    segments:
+      - id: neokeylights
+        from: 1
+        to: 1
+  - platform: partition
+    name: ${key3}
+    segments:
+      - id: neokeylights
+        from: 2
+        to: 2
+  - platform: partition
+    name: ${key4}
+    segments:
+      - id: neokeylights
+        from: 3
+        to: 3
